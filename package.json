@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "David Walshe",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "knex": "^0.21.0",
+    "pg": "^8.0.2"
+  }
 }
