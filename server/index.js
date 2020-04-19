@@ -68,6 +68,42 @@ const listBlog = (call, cb) => {
     })
 };
 
+
+const readBlog = (call, cb) => {
+    const blogId = call.request.getBlogId();
+
+    // Search database for blog matching requested id from client.
+    knex("blogs")
+        .where({id: parseInt(blogId)})
+        .then(data => {
+            // If there is a match for the ID requested.
+            if (data.length) {
+                // Create a blog protobuf.
+                let blog = new blogs.Blog();
+
+                // Load the protobuf.
+                blog.setId(blogId);
+                blog.setAuthor(data[0].author);
+                blog.setTitle(data[0].title);
+                blog.setContent(data[0].content);
+
+                // Create a server response to send to the client.
+                let blogResponse = new blogs.ReadBlogResponse();
+                // Load the blog to the response.
+                blogResponse.setBlog(blog);
+
+                // Send the response.
+                cb(null, blogResponse);
+            } else {
+                // Return an error to the user if blog requested does not exist.
+                return cb({
+                    code: grpc.status.NOT_FOUND,
+                    message: "Could not find blog with id requested"
+                }, null)
+            }
+        })
+};
+
 const main = () => {
     const server = new grpc.Server();
 
@@ -75,6 +111,7 @@ const main = () => {
     server.addService(service.BlogServiceService, {
         createBlog: createBlog,
         listBlog: listBlog,
+        readBlog: readBlog,
     });
 
     server.bind("127.0.0.1:50051", grpc.ServerCredentials.createInsecure());

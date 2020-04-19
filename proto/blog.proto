@@ -16,7 +16,7 @@ message Blog {
 // Blog Read
 // ---------------------------------------------------------------------------------------------------------------------
 message ReadBlogRequest {
-  Blog blog = 1;
+  string blog_id = 1;
 }
 
 message ReadBlogResponse {
