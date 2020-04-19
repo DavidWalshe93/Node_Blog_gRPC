@@ -1,7 +1,13 @@
 // File containing postgres setup commands for knex tool.
 
 1) Creates the table "blogs".
-../node_modules/.bin/knex migrate:make blogs
+    ../node_modules/.bin/knex migrate:make blogs
 
 2) Updates to the latest.
-../node_modules/.bin/knex migrate:latest
+    ../node_modules/.bin/knex migrate:latest
+
+3) Setup seed.
+    ../node_modules/.bin/knex seed:make blogs
+
+4) Updates seed
+    ../node_modules/.bin/knex seed:run
