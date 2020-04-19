@@ -13,10 +13,10 @@ module.exports = {
     development: {
         client: "postgresql",
         connection: {
-            host: "127.0.0.1",
-            user: USERNAME,
-            password: PW,
-            port: PORT,
+            host: "localhost",
+            user: "",     // postgres instance username.
+            password: "", // postgres instance password.
+            port: "5432",
             database: "grpc_blog",
         },
         pool: {
