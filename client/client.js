@@ -37,12 +37,13 @@ const createBlog = () => {
     // Send the request and wait for a response from the server.
     client.createBlog(blogRequest, (error, response) => {
         if (!error) {
-            console.log("Receive create blog response, ", response.toString());
+            console.log("Received create blog response, ", response.toString());
         } else {
             console.log(error);
         }
     })
 };
+
 
 // Fetches all the blogs currently in the servers database.
 const listBlogs = () => {
@@ -52,8 +53,7 @@ const listBlogs = () => {
     let emptyBlogRequest = new blogs.ListBlogRequest();
 
     // Call the server RPC "listBlog"
-    let call = client.listBlog(emptyBlogRequest, () => {
-    });
+    let call = client.listBlog(emptyBlogRequest, null);
 
     // On a stream packet being received.
     call.on("data", response => {
@@ -72,10 +72,32 @@ const listBlogs = () => {
 };
 
 
+// Fetches a single blog from the server based on its id.
+const readBlog = (id) => {
+    const client = getClientConnection();
+
+    // Create a request.
+    let readBlogRequest = new blogs.ReadBlogRequest();
+
+    readBlogRequest.setBlogId(`${id}`);
+
+    // Call the server RPC "readBlog".
+    client.readBlog(readBlogRequest, (error, response) => {
+        if (!error) {
+            console.log("Received read blog response, ", response.toString());
+        } else {
+            console.log(error);
+        }
+    });
+};
+
+
 // Client entry point.
 const main = () => {
-    createBlog();
-    listBlogs();
+    // createBlog();
+    // listBlogs();
+    readBlog(1);
+    readBlog(3);
 };
 
 main();
