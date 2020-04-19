@@ -1,0 +1,29 @@
+// Author: David Walshe
+// Data:   19/04/2020
+
+syntax = "proto3";
+
+package blog;
+
+// Blog is a container for blog data.
+message Blog {
+  string id = 1;
+  string author = 2;
+  string title = 3;
+  string content = 4;
+}
+
+// Blog List
+// ---------------------------------------------------------------------------------------------------------------------
+message ListBlogRequest {}
+
+message ListBlogResponse {
+  Blog blog = 1;
+}
+
+
+
+service BlogService {
+
+  rpc ListBlog (ListBlogRequest) returns (stream ListBlogResponse) {};
+}
