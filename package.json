@@ -1,0 +1,12 @@
+{
+  "name": "blog_grpc",
+  "version": "1.0.0",
+  "description": "A simple blogging application to show how gRPC can be used as a API communication protocol.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "David Walshe",
+  "license": "ISC"
+}
