@@ -4,6 +4,8 @@
   "description": "A simple blogging application to show how gRPC can be used as a API communication protocol.",
   "main": "index.js",
   "scripts": {
+    "dev_server": "env-cmd -f config/dev.env nodemon server/index.js",
+    "dev_client": "nodemon client/client.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,5 +14,9 @@
   "dependencies": {
     "knex": "^0.21.0",
     "pg": "^8.0.2"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "nodemon": "^2.0.3"
   }
 }
