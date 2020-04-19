@@ -104,6 +104,55 @@ const readBlog = (call, cb) => {
         })
 };
 
+
+const updateBlog = (call, cb) => {
+    const blog = call.request.getBlog();
+
+    // Find a blog that matches the blog id requested.
+    knex("blogs")
+        .where({"id": parseInt(blog.getId())})
+        .update({
+            author: blog.getAuthor(),
+            title: blog.getTitle(),
+            content: blog.getContent()
+        })
+        .returning()
+        .then(data => {
+            // If a blog did exist, then update it and return to client.
+            if (data) {
+                let blog = blogFactory(blog.getId(), data.author, data.title, data.content);
+
+                let updateBlogResponse = new blogs.UpdateBlogResponse();
+                updateBlogResponse.setBlog(blog);
+
+                cb(null, updateBlogResponse);
+            } else {
+                cb({
+                    error: grpc.status.NOT_FOUND,
+                    message: "The requested item to update does not exist"
+                })
+            }
+        })
+};
+
+
+// Helper to create and populate a Blog protobuf.
+const blogFactory = (id = null, author = null, title = null, content = null) => {
+    let blog = new blogs.Blog();
+
+    if (id)
+        blog.setId(id);
+    if (author)
+        blog.setAuthor(author);
+    if (title)
+        blog.setTitle(title);
+    if (content)
+        blog.setContent();
+
+    return blog
+};
+
+
 const main = () => {
     const server = new grpc.Server();
 
@@ -112,6 +161,7 @@ const main = () => {
         createBlog: createBlog,
         listBlog: listBlog,
         readBlog: readBlog,
+        updateBlog: updateBlog
     });
 
     server.bind("127.0.0.1:50051", grpc.ServerCredentials.createInsecure());

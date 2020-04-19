@@ -43,6 +43,7 @@ message ListBlogResponse {
   Blog blog = 1;
 }
 
+
 // Blog Update
 // ---------------------------------------------------------------------------------------------------------------------
 message UpdateBlogRequest {
@@ -52,7 +53,6 @@ message UpdateBlogRequest {
 message UpdateBlogResponse {
   Blog blog = 1;
 }
-
 
 
 // =====================================================================================================================

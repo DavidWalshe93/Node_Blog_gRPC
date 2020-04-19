@@ -16,6 +16,7 @@ const getClientConnection = () => {
     )
 };
 
+
 // Creates a new blog on the server DB
 const createBlog = () => {
     const client = getClientConnection();
