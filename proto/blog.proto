@@ -13,6 +13,17 @@ message Blog {
   string content = 4;
 }
 
+// Blog Read
+// ---------------------------------------------------------------------------------------------------------------------
+message ReadBlogRequest {
+  Blog blog = 1;
+}
+
+message ReadBlogResponse {
+  Blog blog = 1;
+}
+
+
 // Blog Create
 // ---------------------------------------------------------------------------------------------------------------------
 message CreateBlogRequest {
@@ -37,6 +48,9 @@ message ListBlogResponse {
 // Services
 // =====================================================================================================================
 service BlogService {
+  // Read a blog.
+  rpc ReadBlog (ReadBlogRequest) returns (ReadBlogResponse) {};
+  // Create a new blog.
   rpc CreateBlog (CreateBlogRequest) returns (CreateBlogResponse) {};
   // Lists all the current blogs.
   rpc ListBlog (ListBlogRequest) returns (stream ListBlogResponse) {};

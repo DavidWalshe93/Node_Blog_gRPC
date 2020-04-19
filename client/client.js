@@ -16,8 +16,36 @@ const getClientConnection = () => {
     )
 };
 
+// Creates a new blog on the server DB
+const createBlog = () => {
+    const client = getClientConnection();
+
+    // Create a blog to add data to.
+    let blog = new blogs.Blog();
+
+    // Add data to the blog protobuf.
+    blog.setAuthor("Adam Flynn");
+    blog.setTitle("Tales of Old");
+    blog.setContent("Long ago in a distance land");
+
+    // Create a blog create request.
+    let blogRequest = new blogs.CreateBlogRequest();
+
+    // Add blog data to request.
+    blogRequest.setBlog(blog);
+
+    // Send the request and wait for a response from the server.
+    client.createBlog(blogRequest, (error, response) => {
+        if (!error) {
+            console.log("Receive create blog response, ", response.toString());
+        } else {
+            console.log(error);
+        }
+    })
+};
+
 // Fetches all the blogs currently in the servers database.
-const callListBlogs = () => {
+const listBlogs = () => {
     const client = getClientConnection();
 
     // Create an empty request.
@@ -46,7 +74,8 @@ const callListBlogs = () => {
 
 // Client entry point.
 const main = () => {
-    callListBlogs()
+    createBlog();
+    listBlogs();
 };
 
 main();
