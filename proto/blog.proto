@@ -43,6 +43,16 @@ message ListBlogResponse {
   Blog blog = 1;
 }
 
+// Blog Update
+// ---------------------------------------------------------------------------------------------------------------------
+message UpdateBlogRequest {
+  Blog blog = 1;
+}
+
+message UpdateBlogResponse {
+  Blog blog = 1;
+}
+
 
 
 // =====================================================================================================================
@@ -55,4 +65,6 @@ service BlogService {
   rpc CreateBlog (CreateBlogRequest) returns (CreateBlogResponse) {};
   // Lists all the current blogs.
   rpc ListBlog (ListBlogRequest) returns (stream ListBlogResponse) {};
+  // Update a blog that already exists.
+  rpc UpdateBlog (UpdateBlogRequest) returns (UpdateBlogResponse) {};
 }
