@@ -2,6 +2,8 @@
 
 // NPM imports
 const grpc = require("grpc");
+// Local imports
+const utils = require("../utils/utils");
 
 // Proto imports
 const blogs = require("../proto_out/proto/blog_pb");
@@ -116,15 +118,23 @@ const updateBlog = (call, cb) => {
             title: blog.getTitle(),
             content: blog.getContent()
         })
-        .returning()
-        .then(data => {
+        .returning("*")
+        .then((data) => {
             // If a blog did exist, then update it and return to client.
             if (data) {
-                let blog = blogFactory(blog.getId(), data.author, data.title, data.content);
+                // Create the updated Blog protobuf
+                let updatedBlog = utils.blogFactory(blogs, {
+                    id: blog.getId(),
+                    author: data[0].author,
+                    title: data[0].title,
+                    content: data[0].content
+                });
 
+                // Create the response.
                 let updateBlogResponse = new blogs.UpdateBlogResponse();
-                updateBlogResponse.setBlog(blog);
+                updateBlogResponse.setBlog(updatedBlog);
 
+                // Send response to Client.
                 cb(null, updateBlogResponse);
             } else {
                 cb({
@@ -132,24 +142,9 @@ const updateBlog = (call, cb) => {
                     message: "The requested item to update does not exist"
                 })
             }
-        })
-};
-
-
-// Helper to create and populate a Blog protobuf.
-const blogFactory = (id = null, author = null, title = null, content = null) => {
-    let blog = new blogs.Blog();
-
-    if (id)
-        blog.setId(id);
-    if (author)
-        blog.setAuthor(author);
-    if (title)
-        blog.setTitle(title);
-    if (content)
-        blog.setContent();
-
-    return blog
+        }).catch(err => {
+        console.error(err)
+    })
 };
 
 

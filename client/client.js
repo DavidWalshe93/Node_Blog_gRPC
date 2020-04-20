@@ -2,6 +2,8 @@
 
 // NPM imports
 const grpc = require("grpc");
+// Local imports
+const utils = require("../utils/utils");
 
 // Proto imports
 const blogs = require("../proto_out/proto/blog_pb");
@@ -92,13 +94,39 @@ const readBlog = (id) => {
     });
 };
 
+// Updates a single blog in the DB on the server.
+const updateBlog = (id) => {
+    const client = getClientConnection();
+
+    // Create a request.
+    let updateBlogRequest = new blogs.UpdateBlogRequest();
+
+    let blog = utils.blogFactory(blogs, {
+        id: id,
+        author: "Mick",
+        title: "Tir Na Nog",
+        content: "Old irish folk tales."
+    });
+
+    updateBlogRequest.setBlog(blog);
+
+    client.updateBlog(updateBlogRequest, (error, response) => {
+        if (!error) {
+            console.log("Received update blog response, ", response.toString());
+        } else {
+            console.log(error);
+        }
+    })
+};
+
 
 // Client entry point.
 const main = () => {
     // createBlog();
     // listBlogs();
-    readBlog(1);
-    readBlog(3);
+    // readBlog(1);
+    // readBlog(3);
+    updateBlog(3)
 };
 
 main();
