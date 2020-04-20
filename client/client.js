@@ -120,13 +120,35 @@ const updateBlog = (id) => {
 };
 
 
+// Deletes a blog.
+const deleteBlog = (id) => {
+    const client = getClientConnection();
+
+    // Create a request.
+    let deleteBlogRequest = new blogs.DeleteBlogRequest();
+
+    // Assign the id to be deleted.
+    deleteBlogRequest.setBlogId(`${id}`);
+
+    // Send request to the server to delete a blog for the ID.
+    client.deleteBlog(deleteBlogRequest, (error, response) => {
+        if (!error) {
+            console.log("Received delete blog response, ", response.toString());
+        } else {
+            console.log(error);
+        }
+    })
+};
+
+
 // Client entry point.
 const main = () => {
     // createBlog();
     // listBlogs();
+    deleteBlog(4)
     // readBlog(1);
     // readBlog(3);
-    updateBlog(3)
+    // updateBlog(3)
 };
 
 main();

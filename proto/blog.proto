@@ -13,6 +13,7 @@ message Blog {
   string content = 4;
 }
 
+
 // Blog Read
 // ---------------------------------------------------------------------------------------------------------------------
 message ReadBlogRequest {
@@ -55,6 +56,17 @@ message UpdateBlogResponse {
 }
 
 
+// Blog Update
+// ---------------------------------------------------------------------------------------------------------------------
+message DeleteBlogRequest {
+  string blog_id = 1;
+}
+
+message DeleteBlogResponse {
+  string blog_id = 1;
+}
+
+
 // =====================================================================================================================
 // Services
 // =====================================================================================================================
@@ -67,4 +79,6 @@ service BlogService {
   rpc ListBlog (ListBlogRequest) returns (stream ListBlogResponse) {};
   // Update a blog that already exists.
   rpc UpdateBlog (UpdateBlogRequest) returns (UpdateBlogResponse) {};
+  // Delete a blog
+  rpc DeleteBlog (DeleteBlogRequest) returns (DeleteBlogResponse) {};
 }

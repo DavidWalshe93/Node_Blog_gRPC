@@ -148,6 +148,36 @@ const updateBlog = (call, cb) => {
 };
 
 
+const deleteBlog = (call, cb) => {
+
+    const blogId = call.request.getBlogId();
+
+    // Find a blog that matches the blog id requested.
+    knex("blogs")
+        .where({"id": parseInt(blogId)})
+        .delete()
+        .returning("*")
+        .then((data) => {
+            // If a blog did exist, then update it and return to client.
+            if (data) {
+                // Create the response.
+                let deleteBlogResponse = new blogs.DeleteBlogResponse();
+                deleteBlogResponse.setBlogId(blogId);
+
+                // Send response to Client.
+                cb(null, deleteBlogResponse);
+            } else {
+                cb({
+                    error: grpc.status.NOT_FOUND,
+                    message: "The requested item to delete does not exist"
+                })
+            }
+        }).catch(err => {
+        console.error(err)
+    })
+};
+
+
 const main = () => {
     const server = new grpc.Server();
 
@@ -156,7 +186,8 @@ const main = () => {
         createBlog: createBlog,
         listBlog: listBlog,
         readBlog: readBlog,
-        updateBlog: updateBlog
+        updateBlog: updateBlog,
+        deleteBlog: deleteBlog
     });
 
     server.bind("127.0.0.1:50051", grpc.ServerCredentials.createInsecure());
