@@ -15,6 +15,7 @@ const config = require("./knexfile")[environment];
 const knex = require("knex")(config);
 
 
+// Handler for createBlog Request.
 const createBlog = (call, cb) => {
     const blog = call.request.getBlog();
 
@@ -46,6 +47,7 @@ const createBlog = (call, cb) => {
 };
 
 
+// Handler for listBlog Request.
 const listBlog = (call, cb) => {
     // Retrieve data from the Postgres database via a Promise.
     knex("blogs").then((data) => {
@@ -71,6 +73,7 @@ const listBlog = (call, cb) => {
 };
 
 
+// Handler for readBlog Request.
 const readBlog = (call, cb) => {
     const blogId = call.request.getBlogId();
 
@@ -107,6 +110,7 @@ const readBlog = (call, cb) => {
 };
 
 
+// Handler for updateBlog Request.
 const updateBlog = (call, cb) => {
     const blog = call.request.getBlog();
 
@@ -148,6 +152,7 @@ const updateBlog = (call, cb) => {
 };
 
 
+// Handler for deleteBlog Request.
 const deleteBlog = (call, cb) => {
 
     const blogId = call.request.getBlogId();
@@ -196,4 +201,5 @@ const main = () => {
     console.log("Server running on 127.0.0.1:50051")
 };
 
+// Code entry point.
 main();
